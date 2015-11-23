@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<title>FDG_Tile</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+<link rel="stylesheet" href="css/main.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
+<script src="js/ui_fun.js"></script>
+<script src="js/render.js"></script>
+<script src="js/main.js"></script>
+<body>
+<div id="page">
+	<div id="mask"></div>
+	<div id="left">
+		<div id="open">Load&nbsp;Image<input type="file" id="file"/></div>
+		<div id="tosvg"><a id="export" href="#" target="_blank">Export&nbsp;SVG</a></div>
+		<div id="effectBox">
+			
+		</div>
+	</div>
+	<div id="right">
+		<div id="compBox">
+			<div id="comp">
+				<canvas id="bg"></canvas>
+				<svg id="svg"></svg>
+			</div>
+		</div>
+		<div id="compBB">
+			<div class="compBut" id="fit" style="background-image:url(img/s100.png)"></div>
+			<div class="compBut" id="show" style="background-image:url(img/show.png)"></div>
+		</div>
+	</div>
+</div>
