@@ -2,13 +2,15 @@ var _ep,_cp,_win,canvas,ctx,svg,g,scl=1;
 var img,w,h,pd,rer=new FileReader();
 var prop={
 	"Type":{"type":"list","options":["Rect","Hex"],"v":"Rect"},
-	"Size":{"type":"slider","min":10,"max":500,"v":100},
+	"Size":{"type":"slider","min":10,"max":400,"v":50},
+	"Width":{"type":"slider","min":10,"max":400,"v":50},
+	"Height":{"type":"slider","min":10,"max":400,"v":50},
 	"Rotation":{"type":"slider","min":0,"max":360,"v":0},
-}
+};
 var propSwitch={
-	"Rect":["Type","Size","Rotation"],
+	"Rect":["Type","Width","Height","Rotation"],
 	"Hex":["Type","Size","Rotation"],
-}
+};
 $(function(){
 	_win={
 		"w":parseInt($("#compBox").css("width"))-10,
@@ -27,7 +29,7 @@ $(function(){
 			ctx.clearRect(0,0,canvas.width,canvas.height);
 			w=img.width;h=img.height;
 			_cp.css({"width":w,"height":h});
-			_cp.css({"top":(_win.h+10-h)/2+"px","left":(_win.w+10-w)/2+"px"});
+			_cp.css({"left":(_win.w+10-w)/2+"px","top":(_win.h+10-h)/2+"px"});
 			if(w>_win.w || h>_win.h){
 				scl=(w/h > _win.w/_win.h) ? (_win.w/w) : (_win.h/h);
 				setScale(scl);

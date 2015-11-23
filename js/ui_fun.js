@@ -44,7 +44,7 @@ function addSlider(name,min,max){
 		$(document).bind("mousemove",function(e1){
 			$("html,body").css("cursor","url(img/CURSORID-15.cur),default");
 			tv.css("cursor","url(img/CURSORID-15.cur),e-resize");
-			var np=(e1.pageX-omp)/2+op;
+			var np=(e1.pageX-omp)/5+op;
 			if(np<min){np=min}
 			if(np>max){np=max}
 			var rv=(np-min)/(max-min)*(smax-smin)+smin;
@@ -114,14 +114,6 @@ function updataUI(){
 	}
 }
 //
-function updataLink(){
-	var source=svg.outerSVG();
-	source = source.replace(/<(g|\/g|\/svg|rect|path|polygon)/,"\n<$1");
-	source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
-	source = '<?xml version="1.0" encoding="utf-8"?>\n' + source;
-	var url = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
-	$("#export").attr("href",url);
-}
 //
 function setScale(s){
 	_cp.css({"-ms-transform":"scale("+s+")",
@@ -149,10 +141,10 @@ $(function(){
 	$("#show").click(function(e){
 		if($(this).css("background-image").indexOf("show")>0){
 			$(this).css("background-image","url(img/hide.png)");
-			$("#svg").css("display","block");
+			$("#svg").css("display","none");
 		}else{
 			$(this).css("background-image","url(img/show.png)");
-			$("#svg").css("display","none");
+			$("#svg").css("display","block");
 		}
 		e.stopPropagation();
 	});
