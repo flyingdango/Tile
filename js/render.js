@@ -1,14 +1,18 @@
-function simple(x,y){
-	var sx=parseInt(x),sy=parseInt(y);
+function simple(shape){
+	var bb,gm,sx,sy,pix,tr,tg,tb,ta,sc;
+	bb=shape.getBBox();
+	gm=g.transform().globalMatrix;
+	sx=parseInt(gm.x(bb.cx,bb.cy));
+	sy=parseInt(gm.y(bb.cx,bb.cy));
 	if(sx<0){sx=0}else if(sx>=w){sx=w-1}
 	if(sy<0){sy=0}else if(sy>=h){sy=h-1}
-	var pix=sy*w+sx;
-	var tr=Math.round(pd.data[pix*4]);
-	var tg=Math.round(pd.data[pix*4+1]);
-	var tb=Math.round(pd.data[pix*4+2]);
-	var ta=pd.data[pix*4+3]/255;
-	//console.log([sx,sy,tr,tg,tb,ta]);
-	return "rgba("+tr+","+tg+","+tb+","+ta+")";
+	pix=sy*w+sx;
+	tr=Math.round(pd.data[pix*4]);
+	tg=Math.round(pd.data[pix*4+1]);
+	tb=Math.round(pd.data[pix*4+2]);
+	ta=pd.data[pix*4+3]/255;
+	sc="rgba("+tr+","+tg+","+tb+","+ta+")";
+	shape.attr({fill:sc});
 }
 function updataLink(){
 	var source=svg.outerSVG();
@@ -18,12 +22,13 @@ function updataLink(){
 	var url = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
 	$("#export").attr("href",url);
 }
-function drawHex(x,y,s){
-	var ra=Math.PI/3;
+function drawPoly(e,x,y,s){
+	var or=arguments[4] ? arguments[4] : 0;
+	var ra=Math.PI*2/e;
 	var temp=[];
-	for(p=0;p<6;p++){
-		temp.push(s*Math.sin(ra*p)+x);
-		temp.push(s*-Math.cos(ra*p)+y);
+	for(p=0;p<e;p++){
+		temp.push(s*Math.sin(ra*p+or)+x);
+		temp.push(s*-Math.cos(ra*p+or)+y);
 	}
 	return g.polygon(temp);
 }
@@ -31,7 +36,7 @@ function render(){
 	$("#svg>g").empty();
 	$("#pBar").css("width","0px");
 	$("#pBarBox").css("display","block");
-	var fix=.5,allc=0,curc=0;
+	var fix=.5,allc,curc,ts;
 	var L=Math.sqrt(w*w+h*h);
 	var tType=prop["Type"].v;
 	if(tType=="Rect"){
@@ -44,14 +49,10 @@ function render(){
 		g.transform("translate("+w/2+","+h/2+") rotate("+rot+",0,0)");
 		var spx=-sizeX*cx/2;
 		var spy=-sizeY*cy/2;
-		var ts,bb,gm,simp,pix,sc;
 		for(var j=0;j<cy;j++){
 			for(var i=0;i<cx;i++){
 				ts=g.rect(spx+i*sizeX,spy+j*sizeY,sizeX+fix,sizeY+fix);
-				bb=ts.getBBox();
-				gm=g.transform().globalMatrix;
-				sc=simple(gm.x(bb.cx,bb.cy),gm.y(bb.cx,bb.cy));
-				ts.attr({fill:sc});
+				simple(ts);
 				curc ++;
 				if(curc%100==0){$("#pBar").css("width",parseInt(curc/allc*500)+"px")}
 			}
@@ -67,18 +68,46 @@ function render(){
 		g.transform("translate("+w/2+","+h/2+") rotate("+rot+",0,0)");
 		var spx=-rx*cx/2;
 		var spy=-ry*cy/2;
-		var ts,bb,gm,simp,pix,sc;
 		for(var j=0;j<cy;j++){
 			for(var i=0;i<cx;i++){
 				if(j%2==0){
-					ts=drawHex(spx+(i+.5)*rx,spy+j*ry+size,size+fix);
+					ts=drawPoly(6,spx+(i+.5)*rx,spy+j*ry+size,size+fix);
 				}else{
-					ts=drawHex(spx+(i+1)*rx,spy+j*ry+size,size+fix);
+					ts=drawPoly(6,spx+(i+1)*rx,spy+j*ry+size,size+fix);
 				}
-				bb=ts.getBBox();
-				gm=g.transform().globalMatrix;
-				sc=simple(gm.x(bb.cx,bb.cy),gm.y(bb.cx,bb.cy));
-				ts.attr({fill:sc});
+				simple(ts);
+				curc ++;
+				if(curc%100==0){$("#pBar").css("width",parseInt(curc/allc*500)+"px")}
+			}
+		}
+	}else if(tType=="Tri1"){
+		var size=prop["Size"].v;
+		var rx=size/2;
+		var ry=size*Math.sqrt(3)/2;
+		var dsize=size*Math.sqrt(3)/3;
+		var rot=prop["Rotation"].v;
+		var cx=Math.ceil(L/rx);
+		var cy=Math.ceil(L/ry);
+		allc=cx*cy;curc=0;
+		g.transform("translate("+w/2+","+h/2+") rotate("+rot+",0,0)");
+		var spx=-rx*cx/2;
+		var spy=-ry*cy/2;
+		for(var j=0;j<cy;j++){
+			for(var i=0;i<cx;i++){
+				if(j%2==0){
+					if(i%2==0){
+						ts=drawPoly(3,spx+i*rx,spy+(j+2/3)*ry,dsize+fix);
+					}else{
+						ts=drawPoly(3,spx+i*rx,spy+(j+1/3)*ry,dsize+fix,Math.PI/3);
+					}
+				}else{
+					if(i%2==0){
+						ts=drawPoly(3,spx+i*rx,spy+(j+1/3)*ry,dsize+fix,Math.PI/3);
+					}else{
+						ts=drawPoly(3,spx+i*rx,spy+(j+2/3)*ry,dsize+fix);
+					}
+				}
+				simple(ts);
 				curc ++;
 				if(curc%100==0){$("#pBar").css("width",parseInt(curc/allc*500)+"px")}
 			}

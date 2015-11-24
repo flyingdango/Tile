@@ -98,7 +98,10 @@ html,body{
 }
 #pBar{
 	left: 0;top: 0;
-	background-color: #3cf;
+	background-color: #0077b3;
+	background-image: url(../img/pb.png);
+	background-position: -20px 0px;
+	background-repeat: repeat-x;
 }
 #comp{
 	display: block;

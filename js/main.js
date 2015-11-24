@@ -1,7 +1,7 @@
 var _ep,_cp,_win,canvas,ctx,svg,g,scl=1;
 var img,w,h,pd,rer=new FileReader();
 var prop={
-	"Type":{"type":"list","options":["Rect","Hex"],"v":"Rect"},
+	"Type":{"type":"list","options":["Rect","Hex","Tri1"],"v":"Rect"},
 	"Size":{"type":"slider","min":10,"max":400,"v":50},
 	"Width":{"type":"slider","min":10,"max":400,"v":50},
 	"Height":{"type":"slider","min":10,"max":400,"v":50},
@@ -10,6 +10,7 @@ var prop={
 var propSwitch={
 	"Rect":["Type","Width","Height","Rotation"],
 	"Hex":["Type","Size","Rotation"],
+	"Tri1":["Type","Size","Rotation"],
 };
 $(function(){
 	_win={
