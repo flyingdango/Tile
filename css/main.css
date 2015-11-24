@@ -83,6 +83,23 @@ html,body{
 .compBut:hover{
 	background-color: #555;
 }
+#pBarBox,#pBar{
+	position: absolute;
+	display: block;
+	overflow: hidden;
+	width: 500px;
+	height: 14px;
+}
+#pBarBox{
+	display: none;
+	left: 200px;
+	top: 6px;
+	background-color: #000;
+}
+#pBar{
+	left: 0;top: 0;
+	background-color: #3cf;
+}
 #comp{
 	display: block;
 	position: absolute;

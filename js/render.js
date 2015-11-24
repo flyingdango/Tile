@@ -29,7 +29,9 @@ function drawHex(x,y,s){
 }
 function render(){
 	$("#svg>g").empty();
-	var fix=.5;
+	$("#pBar").css("width","0px");
+	$("#pBarBox").css("display","block");
+	var fix=.5,allc=0,curc=0;
 	var L=Math.sqrt(w*w+h*h);
 	var tType=prop["Type"].v;
 	if(tType=="Rect"){
@@ -38,7 +40,7 @@ function render(){
 		var rot=prop["Rotation"].v;
 		var cx=Math.ceil(L/sizeX);
 		var cy=Math.ceil(L/sizeY);
-		//console.log([cx,cy]);
+		allc=cx*cy;curc=0;
 		g.transform("translate("+w/2+","+h/2+") rotate("+rot+",0,0)");
 		var spx=-sizeX*cx/2;
 		var spy=-sizeY*cy/2;
@@ -50,6 +52,8 @@ function render(){
 				gm=g.transform().globalMatrix;
 				sc=simple(gm.x(bb.cx,bb.cy),gm.y(bb.cx,bb.cy));
 				ts.attr({fill:sc});
+				curc ++;
+				if(curc%100==0){$("#pBar").css("width",parseInt(curc/allc*500)+"px")}
 			}
 		}
 	}else if(tType=="Hex"){
@@ -59,6 +63,7 @@ function render(){
 		var rot=prop["Rotation"].v;
 		var cx=Math.ceil(L/rx);
 		var cy=Math.ceil(L/ry);
+		allc=cx*cy;curc=0;
 		g.transform("translate("+w/2+","+h/2+") rotate("+rot+",0,0)");
 		var spx=-rx*cx/2;
 		var spy=-ry*cy/2;
@@ -74,10 +79,17 @@ function render(){
 				gm=g.transform().globalMatrix;
 				sc=simple(gm.x(bb.cx,bb.cy),gm.y(bb.cx,bb.cy));
 				ts.attr({fill:sc});
+				curc ++;
+				if(curc%100==0){$("#pBar").css("width",parseInt(curc/allc*500)+"px")}
 			}
 		}
 	}else{
 		//...
 	}
 	updataLink();
+	$("#pBar").css("width","500px");
+	var pbt=setTimeout(function(){
+		$("#pBarBox").css("display","none");
+		clearTimeout(pbt);
+	},500);
 }
