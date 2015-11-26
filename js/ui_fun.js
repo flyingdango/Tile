@@ -13,6 +13,7 @@ function addSlider(name,min,max){
 	var tv=$("#ID_"+name+">.prop_value");
 	ts.css("left",prop[name].v/(max-min)*(smax-smin)+smin+"px");
 	ts.bind("mousedown",function(e){
+		hideUl();
 		var omp=e.pageX;
 		var op=parseInt(ts.css("left"));
 		$(document).bind("mousemove",function(e1){
@@ -123,7 +124,11 @@ function setScale(s){
 			"transform":"scale("+s+")"});
 }
 //
+function hideUl(){
+	$("#effectBox ul").css("display","none");
+}
 $(function(){
+	$(document).bind("click",hideUl);
 	$("#mask").click(function(e){
 		e.stopPropagation();
 		return false;
@@ -145,6 +150,16 @@ $(function(){
 		}else{
 			$(this).css("background-image","url(img/show.png)");
 			$("#svg").css("display","block");
+		}
+		e.stopPropagation();
+	});
+	$("#trans").click(function(e){
+		if($(this).css("background-image").indexOf("transoff")>0){
+			$(this).css("background-image","url(img/transon.png)");
+			$("#compBox").css("background-image","url(img/grid.png)");
+		}else{
+			$(this).css("background-image","url(img/transoff.png)");
+			$("#compBox").css("background-image","none");
 		}
 		e.stopPropagation();
 	});

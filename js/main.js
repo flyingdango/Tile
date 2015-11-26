@@ -1,7 +1,7 @@
 var _ep,_cp,_win,canvas,ctx,svg,g,scl=1;
 var img,w,h,pd,rer=new FileReader();
 var prop={
-	"Type":{"type":"list","options":["Rect","Hex","Tri1"],"v":"Rect"},
+	"Type":{"type":"list","options":["Rect","Hex","Tri1","Tri2"],"v":"Rect"},
 	"Size":{"type":"slider","min":10,"max":400,"v":50},
 	"Width":{"type":"slider","min":10,"max":400,"v":50},
 	"Height":{"type":"slider","min":10,"max":400,"v":50},
@@ -11,6 +11,7 @@ var propSwitch={
 	"Rect":["Type","Width","Height","Rotation"],
 	"Hex":["Type","Size","Rotation"],
 	"Tri1":["Type","Size","Rotation"],
+	"Tri2":["Type","Size","Rotation"],
 };
 $(function(){
 	_win={
@@ -38,6 +39,7 @@ $(function(){
 				scl=1;
 				setScale(1);
 			}
+			$("#fit").css("background-image","url(img/s100.png)");
 			canvas.width=w;canvas.height=h;
 			svg.attr({width:w,height:h});
 			g.attr({transform:"translate("+parseInt(w/2)+","+parseInt(h/2)+")"});

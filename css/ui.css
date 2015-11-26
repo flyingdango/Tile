@@ -1,0 +1,106 @@
+/*slider*/
+.slider{
+	display: block;
+	overflow: hidden;
+	position: relative;
+	width: 300px;
+	height: 50px;
+	font-size: 14px;
+	line-height: 0;
+	color: #d4d4d4;
+}
+.prop_name{
+	position: absolute;
+	top: 5px;
+	left: 10px;
+	pointer-events: none;
+}
+.slider>.prop_value{
+	position: absolute;
+	top: 5px;
+	left: 130px;
+	color:#3cf;
+	cursor: url(../img/CURSORID-18.cur),e-resize;
+}
+.slider>.prop_min{
+	position: absolute;
+	top: 20px;
+	left: 10px;
+	font-size: 12px;
+	pointer-events: none;
+}
+.slider>.prop_max{
+	position: absolute;
+	top: 20px;
+	left: 250px;
+	font-size: 12px;
+	pointer-events: none;
+}
+.slider>.slider_line{
+	position: absolute;
+	width:280px;
+	height:2px;
+	background-color: #000;
+	top: 32px;
+	left: 10px;
+	pointer-events: none;
+}
+.slider>.slider_block{
+	position: absolute;
+	width:17px;
+	height:14px;
+	background-image: url(../img/slider.png);
+	background-repeat: no-repeat;
+	top: 26px;
+	left: 140px;
+	z-index: 2;
+	cursor: pointer;
+}
+
+/*list*/
+.list{
+	display: block;
+	overflow: visible;
+	position: relative;
+	width: 300px;
+	height: 40px;
+	font-size: 14px;
+	line-height: 16px;
+	color: #d4d4d4;
+}
+.list>.prop_value{
+	display: block;
+	position: absolute;
+	top: 6px;
+	left: 100px;
+	width: 100px;
+	height: 16px;
+	padding-left: 5px; 
+	background-color: #000;
+	background-image: url(../img/tri.png);
+	background-repeat: no-repeat;
+	background-position: 85px 4px;
+	color: #3cf;
+	cursor: pointer;
+}
+.list>ul{
+/*	display: none;*/
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	top: 22px;
+	left: 100px;
+	width: 100px;
+	padding-left: 5px; 
+	background-color: #000;
+	z-index: 2;
+}
+.list li{
+	margin-top: 2px;
+	margin-bottom: 2px;
+	cursor: pointer;
+}
+.list li:hover{
+	background-color: #555;
+}
