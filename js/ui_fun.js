@@ -129,6 +129,12 @@ function hideUl(){
 	//return false;
 }
 $(function(){
+	var imgs=["f2c","hide","transon"];
+	for(var j=0;j<imgs.length;j++){
+		var ti=new Image();
+		ti.src="img/"+imgs[j]+".png";
+		//ti.onload=function(){console.log(ti.width);}
+	}
 	$(document).bind("click",hideUl);
 	$("#mask").click(function(e){
 		e.stopPropagation();

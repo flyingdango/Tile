@@ -73,15 +73,15 @@ html,body{
 	height: 26px;
 }
 #fit{
-	background-image:url(../img/f2c.png);
+/*	background-image:url(../img/f2c.png);*/
 	background-image:url(../img/s100.png);
 }
 #show{
-	background-image:url(../img/hide.png);
+/*	background-image:url(../img/hide.png);*/
 	background-image:url(../img/show.png);
 }
 #trans{
-	background-image:url(../img/transon.png);
+/*	background-image:url(../img/transon.png);*/
 	background-image:url(../img/transoff.png);
 }
 .compBut{
