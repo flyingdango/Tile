@@ -126,6 +126,7 @@ function setScale(s){
 //
 function hideUl(){
 	$("#effectBox ul").css("display","none");
+	//return false;
 }
 $(function(){
 	$(document).bind("click",hideUl);
@@ -136,10 +137,10 @@ $(function(){
 	$("#fit").click(function(e){
 		if($(this).css("background-image").indexOf("s100")>0){
 			$(this).css("background-image","url(img/f2c.png)");
-			setScale(1);
+			scl<1 ? setScale(1):setScale(scl);//放大
 		}else{
 			$(this).css("background-image","url(img/s100.png)");
-			setScale(scl);
+			scl<1 ? setScale(scl):setScale(1);//缩小
 		}
 		e.stopPropagation();
 	});

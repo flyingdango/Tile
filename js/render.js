@@ -1,14 +1,13 @@
 function simple(shape){
-	var bb,gm,sp,sx,sy,pix,tr,tg,tb,ta,sc;
-	gm=g.transform().globalMatrix;
+	var bb,sp,sx,sy,pix,tr,tg,tb,ta,sc;
 	if(arguments[1]){
 		sp=arguments[1];
-		sx=parseInt(gm.x(sp[0],sp[1]));
-		sy=parseInt(gm.y(sp[0],sp[1]));
+		sx=parseInt(ggm.x(sp[0],sp[1]));
+		sy=parseInt(ggm.y(sp[0],sp[1]));
 	}else{
 		bb=shape.getBBox();
-		sx=parseInt(gm.x(bb.cx,bb.cy));
-		sy=parseInt(gm.y(bb.cx,bb.cy));
+		sx=parseInt(ggm.x(bb.cx,bb.cy));
+		sy=parseInt(ggm.y(bb.cx,bb.cy));
 	}
 	//console.log([sx,sy]);
 	if(sx<0){sx=0}else if(sx>=w){sx=w-1}
@@ -54,6 +53,34 @@ function drawTri2(x,y,s){
 	//console.log(tsp);
 	simple(tri,tsp);
 }
+// function offsetPath(pa,o){
+// 	var sum=[0,0],pc,dv,dn,nl,nv,np,npa=[];
+// 	pc=pa.length/2;
+// 	for(var p=0;p<pc;p++){
+// 		sum[0]=sum[0]+pa[p*2];
+// 		sum[1]=sum[1]+pa[p*2+1];
+// 	}
+// 	var avg=[sum[0]/pc,sum[1]/pc];
+// 	//console.log(pa);
+// 	for(var p=0;p<pc;p++){
+// 		dv=[pa[p*2]-avg[0],pa[p*2+1]-avg[1]];
+// 		dn=getNormal(dv)
+// 		nl=getLength(dv)+o;
+// 		nv=[dn[0]*nl,dn[1]*nl];
+// 		npa.push(avg[0]+nv[0]);
+// 		npa.push(avg[1]+nv[1]);
+// 	}
+// 	//console.log(npa);
+// 	return npa;
+// }
+// function getLength(v){
+// 	return Math.sqrt(v[0]*v[0]+v[1]*v[1]);
+// }
+// function getNormal(v){
+// 	var l=Math.sqrt(v[0]*v[0]+v[1]*v[1]);
+// 	if(l==0){return [0,0]}
+// 	return [v[0]/l,v[1]/l];
+// }
 function render(){
 	$("#svg>g").empty();
 	$("#pBar").css("width","20px");
@@ -69,6 +96,7 @@ function render(){
 		var cy=Math.ceil(L/sizeY);
 		allc=cx*cy;curc=0;
 		g.transform("translate("+w/2+","+h/2+") rotate("+rot+",0,0)");
+		ggm=g.transform().globalMatrix;
 		var spx=-sizeX*cx/2;
 		var spy=-sizeY*cy/2;
 		for(var j=0;j<cy;j++){
@@ -88,6 +116,7 @@ function render(){
 		var cy=Math.ceil(L/ry);
 		allc=cx*cy;curc=0;
 		g.transform("translate("+w/2+","+h/2+") rotate("+rot+",0,0)");
+		ggm=g.transform().globalMatrix;
 		var spx=-rx*cx/2;
 		var spy=-ry*cy/2;
 		for(var j=0;j<cy;j++){
@@ -111,6 +140,7 @@ function render(){
 		var cy=Math.ceil(L/ry);
 		allc=cx*cy;curc=0;
 		g.transform("translate("+w/2+","+h/2+") rotate("+rot+",0,0)");
+		ggm=g.transform().globalMatrix;
 		var spx=-rx*cx/2;
 		var spy=-ry*cy/2;
 		for(var j=0;j<cy;j++){
@@ -140,6 +170,7 @@ function render(){
 		var cy=Math.ceil(L/size);
 		allc=cx*cy;curc=0;
 		g.transform("translate("+w/2+","+h/2+") rotate("+rot+",0,0)");
+		ggm=g.transform().globalMatrix;
 		var spx=-size*cx/2;
 		var spy=-size*cy/2;
 		for(var j=0;j<cy;j++){
@@ -164,6 +195,47 @@ function render(){
 				curc ++;
 				if(curc%500==0){$("#pBar").css("width",parseInt(curc/allc*500)+"px")}
 			}
+		}
+	}else if(tType=="Delaunay"){
+		g.transform("none");
+		ggm=g.transform().globalMatrix;
+		var size=prop["Size"].v;
+		var sampler = poissonDiscSampler(w+size, h+size, size);
+		var sample,temp=[];
+		var vertices=[[-size,-size],[w+size,-size],[w+size,h+size],[-size,h+size]];
+		while ((sample = sampler())) {
+		  vertices.push(sample);
+		}
+		var tris=d3.geom.voronoi().triangles(vertices);
+		for(var c=0;c<tris.length;c++){
+			temp=[];
+			for(var j=0;j<3;j++){
+				temp.push(tris[c][j][0],tris[c][j][1]);
+			}
+			//console.log(temp);
+			ts=g.polygon(temp);
+			simple(ts);
+		}
+	}else if(tType=="Voronoi"){
+		g.transform("none");
+		ggm=g.transform().globalMatrix;
+		var size=prop["Size"].v;
+		var sampler = poissonDiscSampler(w, h, size);
+		var sample,temp=[];
+		var vertices=[];
+		while ((sample = sampler())) {
+		  vertices.push(sample);
+		}
+		var vo=d3.geom.voronoi();
+		var cells=vo(vertices);
+		for(var c=0;c<cells.length;c++){
+			temp=[];
+			for(var j=0;j<cells[c].length;j++){
+				temp.push(cells[c][j][0],cells[c][j][1]);
+			}
+			//console.log(temp);
+			ts=g.polygon(temp);
+			simple(ts);
 		}
 	}else{
 		//...

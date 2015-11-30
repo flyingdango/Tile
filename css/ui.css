@@ -94,7 +94,7 @@
 	width: 100px;
 	padding-left: 5px; 
 	background-color: #000;
-	z-index: 2;
+	z-index: 3;
 }
 .list li{
 	margin-top: 2px;

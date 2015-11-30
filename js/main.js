@@ -1,17 +1,20 @@
-var _ep,_cp,_win,canvas,ctx,svg,g,scl=1;
+var _ep,_cp,_win,canvas,ctx,svg,g,ggm,scl=1;
 var img,w,h,pd,rer=new FileReader();
 var prop={
-	"Type":{"type":"list","options":["Rect","Hex","Tri1","Tri2"],"v":"Rect"},
-	"Size":{"type":"slider","min":10,"max":400,"v":50},
+	"Type":{"type":"list","options":["Rect","Hex","Tri1","Tri2","Delaunay","Voronoi"],"v":"Rect"},
+	"Size":{"type":"slider","min":25,"max":400,"v":50},
 	"Width":{"type":"slider","min":10,"max":400,"v":50},
 	"Height":{"type":"slider","min":10,"max":400,"v":50},
 	"Rotation":{"type":"slider","min":0,"max":360,"v":0},
+	"Seed":{"type":"slider","min":0,"max":233,"v":0},
 };
 var propSwitch={
 	"Rect":["Type","Width","Height","Rotation"],
 	"Hex":["Type","Size","Rotation"],
 	"Tri1":["Type","Size","Rotation"],
 	"Tri2":["Type","Size","Rotation"],
+	"Delaunay":["Type","Size","Seed"],
+	"Voronoi":["Type","Size","Seed"],
 };
 $(function(){
 	_win={
@@ -32,11 +35,10 @@ $(function(){
 			w=img.width;h=img.height;
 			_cp.css({"width":w,"height":h});
 			_cp.css({"left":(_win.w+10-w)/2+"px","top":(_win.h+10-h)/2+"px"});
+			scl=(w/h > _win.w/_win.h) ? (_win.w/w) : (_win.h/h);
 			if(w>_win.w || h>_win.h){
-				scl=(w/h > _win.w/_win.h) ? (_win.w/w) : (_win.h/h);
 				setScale(scl);
 			}else{
-				scl=1;
 				setScale(1);
 			}
 			$("#fit").css("background-image","url(img/s100.png)");
